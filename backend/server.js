@@ -11,7 +11,7 @@ app.use(cors());
 
 
 app.get("/kalai", (req, res, next) => {
-    res.send("welcome to kalai amma appa")
+    res.send("welcome to kalai amma appa new")
 })
 app.listen(process.env.PORT, () => {
     console.log(`Port Running ${process.env.PORT}`)
