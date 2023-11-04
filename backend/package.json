@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type":"module",
-    "scripts": {
-      "start": "nodemon app.js",
-      "build": "react-scripts build"
+  "type": "module",
+  "scripts": {
+    "start": "nodemon app.js",
+    "build": "npm i"
   },
   "keywords": [],
   "author": "",
