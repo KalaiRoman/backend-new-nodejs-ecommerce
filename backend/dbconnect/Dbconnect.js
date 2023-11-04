@@ -4,7 +4,7 @@ const ConnectDb = async () => {
     try {
 
         mongoose.connect(process.env.MONGOOSEKEY).then((res) => {
-            console.log("DB Connected");
+            console.log("DB Connected new");
         }).catch((err) => {
             console.log(err);
         })
