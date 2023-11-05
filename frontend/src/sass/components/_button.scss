@@ -1,0 +1,13 @@
+@use "../abstract" as *;
+
+.loginButton {
+    width: auto;
+    padding:8px 100px;
+    border: none;
+    outline: none;
+    background-color: orangered;
+    color: white;
+    border-radius: 10px;
+    // font-weight: 800;
+    font-size: 1.3rem;
+}
