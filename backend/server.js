@@ -16,5 +16,5 @@ app.listen(process.env.PORT, () => {
 })
 
 app.get("/kalai", (req, res) => {
-    res.send("welcome to kalai amma appa new")
+    res.send("welcome to kalai amma appa new thala")
 })
