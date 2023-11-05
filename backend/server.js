@@ -10,9 +10,11 @@ app.use(express.json());
 app.use(cors());
 
 
-app.get("/kalai", (req, res) => {
-    res.send("welcome to kalai amma appa new")
-})
+
 app.listen(process.env.PORT, () => {
     console.log(`Port Running ${process.env.PORT}`)
+})
+
+app.get("/kalai", (req, res) => {
+    res.send("welcome to kalai amma appa new")
 })
