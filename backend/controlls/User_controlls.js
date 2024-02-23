@@ -1,16 +1,12 @@
-import auth_shema from "../models/auth_shema.js";
 import user_data from "../models/user_data.js";
-
 export const createUserName = async (req, res, next) => {
     try {
         const { name, user } = req.body;
         const response = await user_data.create({ name, user });
         res.status(201).json({ message: response })
-
     } catch (error) {
     }
 }
-
 export const getUserName = async (req, res, next) => {
     try {
         const page = Number(req.query.page) || 1;
@@ -53,27 +49,18 @@ export const postCreateuser = async (req, res, next) => {
 export const postDeleteuser = async (req, res, next) => {
     try {
         const { user, postid } = req.body;
-
-        // Find the user based on the provided user ID
-        const userData = await user_data.findById({ _id: user });
-
         const updatedUserData = await user_data.findByIdAndUpdate(
             { _id: user },
             { $pull: { postusers: { _id: postid } } }, // Remove the post with the specified ID
-            { new: true } // Return the updated user data
+            { new: true }
         );
-
         res.status(200).json({ message: "Post deleted successfully", updatedUserData });
     } catch (error) {
-        // Handle any errors
         console.error(error);
         res.status(500).json({ message: "Internal server error" });
     }
 }
-
-
 // like person
-
 export const postLikeuser = async (req, res, next) => {
     try {
         const { user, like, id } = req.body;
@@ -87,9 +74,7 @@ export const postLikeuser = async (req, res, next) => {
 
     }
 }
-
 // update ppost like data
-
 export const postUpdateLikeuser = async (req, res, next) => {
     try {
         const { id, like, likeid } = req.body;
@@ -101,7 +86,6 @@ export const postUpdateLikeuser = async (req, res, next) => {
     } catch (error) {
     }
 }
-
 // delete like
 export const postDeleteLikeuser = async (req, res, next) => {
     try {
@@ -109,6 +93,5 @@ export const postDeleteLikeuser = async (req, res, next) => {
         const response = await user_data.findByIdAndUpdate({ _id: id }, { $pull: { postlike: { _id: likeid } } }, { new: true });
         res.status(200).json({ message: "Updated Like", response })
     } catch (error) {
-
     }
 }
