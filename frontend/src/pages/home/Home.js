@@ -55,12 +55,18 @@ function Home() {
 
   const api = 'http://localhost:9020/base/get';
   const postlike = 'http://localhost:9020/base/update/like';
+  const postlikeupdate = 'http://localhost:9020/base/upadted/like/user';
+
 
 
   const [users, setUsers] = useState([]);
 
   const [trues, setTrue] = useState(false);
   const [indexs, setIndxes] = useState(null);
+  const [userlike, setUserLike] = useState(null);
+
+  console.log(userlike, 'userlike')
+
 
 
 
@@ -71,7 +77,7 @@ function Home() {
     }).catch((err) => {
       console.log(err)
     })
-  }, [trues]);
+  }, [trues, userlike]);
 
   const likes = [
     {
@@ -115,42 +121,74 @@ function Home() {
     setTrue(true);
   }
 
-  const LikeUserPost = (likename, id) => {
-    console.log(id, likename)
+  const LikeUserPost = (likename, id, userid, likeid) => {
 
-    const data = {
-      user: id,
-      like: likename
+
+    if (userlike) {
+      const data = {
+        id: id,
+        like: likename,
+        likeid: likeid
+      }
+
+      console.log(data, 'data')
+      axios.put(postlikeupdate, data).then((res) => {
+        setIndxes(null);
+        setTrue(false);
+      }).catch((err) => {
+        console.log(err)
+      })
     }
-    axios.put(postlike, data).then((res) => {
-      setIndxes(null);
-      setTrue(false);
-    }).catch((err) => {
-      console.log(err)
-    })
+    else {
+      const data = {
+        user: userid,
+        id: id,
+        like: likename
+      }
+      axios.put(postlike, data).then((res) => {
+        setIndxes(null);
+        setTrue(false);
+      }).catch((err) => {
+        console.log(err)
+      })
+    }
   }
   return (
     <div>
-
       <div className='container'>
         <div className='row d-flex gap-5'>
           {users?.map((item, index) => {
+            const datas = item?.postlike?.find((itemss, index) => itemss?.user == item?.user);
             return (
-              <div className='card col-lg-3 mb-3 mt-4'>
+              <div className='card col-lg-3 mb-3 mt-4'
+                onMouseLeave={() => {
+                  setTrue(false)
+                  setIndxes(null)
+                  alert("kalai")
+                }}
+              >
                 {item?.name}
 
                 <div className='main-like'>
                   <div>
                     {index === indexs ? <div className='mt-3 mb-3 d-flex'>
-                      {likes?.map((items) => <div className='like-lists' onClick={() => LikeUserPost(items?.likename, item?._id)}>
+                      {likes?.map((items) => <div className='like-lists' onClick={() => LikeUserPost(items?.likename, item?._id, item?.user, datas?._id)}>
                         {items?.name}
                       </div>)}
                     </div> : <></>}
                   </div>
-                  <div>
-                    {/* {item?.postlike?.find((itemss, index) => itemss?.user==)}; */}
+                  <div className='mb-3 mt-2 fw-bold text-red-400'>
+                    {datas?.like} <span className='text-blue-500'>{item?.postlike?.length}</span>
                   </div>
-                  <div className='like-box' onMouseOver={(e) => handleChange(index)} >
+                  <div className='like-box' onMouseOver={(e) => {
+                    handleChange(index)
+                    setUserLike(datas?.like);
+
+                  }
+
+                  }
+
+                  >
                     {index === indexs ? <>
                     </> : <>
                       <button>Like</button>

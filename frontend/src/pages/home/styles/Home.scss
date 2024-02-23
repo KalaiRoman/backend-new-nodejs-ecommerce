@@ -2,8 +2,6 @@
 
 .main-like {
     width: 100%;
-    border: 2px solid red;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     border-radius: 10px;
     gap: 20px;
     cursor: pointer;
@@ -16,6 +14,7 @@
         padding: 2px 4px;
         transition: 0.2s;
         font-size: 1.3rem;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     }
     .like-lists:hover {
         transform: translateY(-10px);
