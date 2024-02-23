@@ -16,7 +16,6 @@ const auth_Shema = new mongoose.Schema({
         required: [true, "Password is Required"],
         min: 5,
         max: 8
-
     }
 },
     {

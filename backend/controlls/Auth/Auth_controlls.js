@@ -3,6 +3,8 @@ import auth_shema from "../../models/auth_shema.js";
 
 
 export const createUser = async (req, res, next) => {
+
+    console.log(req.body);
     const { email, userName, password } = req.body;
 
     try {
@@ -19,6 +21,7 @@ export const createUser = async (req, res, next) => {
         });
     } catch (error) {
         next(error);
+
     }
 
 

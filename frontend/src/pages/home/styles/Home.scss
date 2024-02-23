@@ -1,0 +1,26 @@
+@use "../../../sass/abstract/" as *;
+
+.main-like {
+    width: 100%;
+    border: 2px solid red;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border-radius: 10px;
+    gap: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+    .like-lists {
+        width: 100%;
+        display: flex;
+        gap: 15px;
+        flex-direction: row;
+        padding: 2px 4px;
+        transition: 0.2s;
+        font-size: 1.3rem;
+    }
+    .like-lists:hover {
+        transform: translateY(-10px);
+    }
+}
+.like-box {
+    width: 40px;
+}
