@@ -51,11 +51,20 @@ import axios from 'axios';
 import { useState } from 'react';
 import './styles/Home.scss';
 
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
+
+import EmojiPicker from 'emoji-picker-react';
+
+
 function Home() {
 
   const api = 'http://localhost:9020/base/get';
   const postlike = 'http://localhost:9020/base/update/like';
   const postlikeupdate = 'http://localhost:9020/base/upadted/like/user';
+
+  const CommentUsers = 'http://localhost:9020/base/update';
 
 
 
@@ -153,24 +162,70 @@ function Home() {
       })
     }
   }
+
+  const [userid, setUserid] = useState({
+    id: "",
+    postid: ""
+  });
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = (id, postids) => {
+    setShow(true)
+    setUserid({
+      id: id,
+      postid: postids
+    })
+  };
+
+  const [messages, setMessages] = useState("")
+
+  const [showemoji, setShowemoji] = useState(false);
+  const handleEmojiClick = (emoji) => {
+    var message = messages + emoji?.emoji;
+    setMessages(message)
+    setShowemoji(false)
+  }
+
+
+  const sendComments = () => {
+    const datas = {
+      message: messages,
+      user: userid?.id,
+      id: userid?.postid
+    }
+    axios.put(CommentUsers, datas).then((res) => {
+      console.log(res)
+      handleClose();
+      setMessages(null);
+
+    }).catch((err) => {
+      console.log(err)
+    })
+  }
+
+  console.log(users, 'users')
   return (
     <div>
       <div className='container'>
+        <div>
+          <div className='text-5xl mt-4 mb-4 fw-bold'>
+            All Users
+          </div>
+        </div>
         <div className='row d-flex gap-5'>
           {users?.map((item, index) => {
-            const datas = item?.postlike?.find((itemss, index) => itemss?.user == item?.user);
+            const datas = item?.postlike?.find((itemss, index) => itemss?.user == item?.user?._id);
             return (
               <div className='card col-lg-3 mb-3 mt-4'
                 onMouseLeave={() => {
                   setTrue(false)
                   setIndxes(null)
-                  alert("kalai")
                 }}
               >
                 {item?.name}
 
                 <div className='main-like'>
-                  <div>
+                  <div className='main-box-like-shadow'>
                     {index === indexs ? <div className='mt-3 mb-3 d-flex'>
                       {likes?.map((items) => <div className='like-lists' onClick={() => LikeUserPost(items?.likename, item?._id, item?.user, datas?._id)}>
                         {items?.name}
@@ -194,13 +249,59 @@ function Home() {
                       <button>Like</button>
                     </>}
                   </div>
+                  <div className='mt-3 mb-4' onClick={() => handleShow(item?.user, item?._id)}>
+                    Comments <span className='text-blue-600 fw-bold'>{item?.postusers?.length}</span>
+                  </div>
                 </div>
+
               </div>
             )
           })}
 
           {users?.length === 0 ? <div className='mt-4'>No Users</div> : null}
         </div>
+      </div>
+
+      <div>
+        <Modal
+          show={show}
+          onHide={handleClose}
+          backdrop="static"
+          keyboard={false}
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Message</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className='d-flex gap-3 align-items-center'>
+              <div>
+                {showemoji ? <>
+
+                  <EmojiPicker className='box-emojies' onEmojiClick={handleEmojiClick} />
+
+                </> : <>
+                  <div onClick={() => setShowemoji(true)} className='text-orange-600 fw-bold capitalize text-space-2xl cursor-pointer'>emojies</div>
+                </>}
+              </div>
+              <div className='w-100'>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Label>Message</Form.Label>
+                  <Form.Control type="text" placeholder="Enter message"
+                    value={messages} onChange={(e) => setMessages(e?.target?.value)} />
+                </Form.Group>
+              </div>
+            </div>
+            <div>
+              <button className='bg-red-500 w-20 p-2 border rounded outline-none cursor-pointer text-white capitalize fw-bold
+              xs:text-blue-600
+              '
+                onClick={sendComments}
+              >send</button>
+            </div>
+          </Modal.Body>
+
+        </Modal>
       </div>
 
     </div>

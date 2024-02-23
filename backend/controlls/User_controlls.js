@@ -20,7 +20,7 @@ export const getUserName = async (req, res, next) => {
             res.status(200).json({ message: "Success", count: countdata, page: page, showdata: showDatapage, limit: limit, data: response })
         }
         else {
-            const response = await user_data.find({}).skip(skip).limit(limit).sort({ name: -1 });
+            const response = await user_data.find({}).skip(skip).limit(limit).sort({ name: -1 }).populate("user");
             const countdata = await user_data.countDocuments();
             const showDatapage = `${page * limit - 10} to ${(limit * page)}`
             res.status(200).json({ message: "Success", count: countdata, page: page, showdata: showDatapage, limit: limit, data: response })
@@ -34,12 +34,13 @@ export const getUserName = async (req, res, next) => {
 
 export const postCreateuser = async (req, res, next) => {
     try {
-        const { user, message } = req.body;
+        const { user, message, id } = req.body;
         const data = {
             user: user,
-            message: message
+            message: message,
+            id: id
         }
-        const response = await user_data.findByIdAndUpdate({ _id: user }, { $push: { postusers: data } }, { new: true });
+        const response = await user_data.findByIdAndUpdate({ _id: id }, { $push: { postusers: data } }, { new: true });
         res.status(200).json({ message: "update one user post method", response })
     } catch (error) {
 

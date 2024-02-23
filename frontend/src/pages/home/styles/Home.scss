@@ -14,7 +14,6 @@
         padding: 2px 4px;
         transition: 0.2s;
         font-size: 1.3rem;
-        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     }
     .like-lists:hover {
         transform: translateY(-10px);
@@ -22,4 +21,10 @@
 }
 .like-box {
     width: 40px;
+}
+
+.main-box-like-shadow {
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    background-color: white;
+    border-radius: 10px;
 }
